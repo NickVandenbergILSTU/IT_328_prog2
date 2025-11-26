@@ -1,0 +1,4 @@
+Add your own names and team info.
+Use these files as the core logic in your repo tree (as shown before).
+Reference lines and algorithm logic for your written report.
+Use python emptiness.py examples/ex1.txt and python equivalence.py examples/ex2.txt to run the programs.
