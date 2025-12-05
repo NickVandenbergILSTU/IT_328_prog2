@@ -1,57 +1,43 @@
-/*
+/**
  * Util.java
- * ---------
- * Common utility functions for file IO and parsing.
- * Can be imported for reading input files, skipping comments, and more.
- *
- * Author(s): (put your names here)
+ * Miscellaneous utility functions.
  */
 
 import java.io.*;
 import java.util.*;
 
 public class Util {
-    /**
-     * Reads the first non-comment, non-blank line from a file (for single-DFA inputs).
-     * 
-     * @param filename File to read
-     * @return First valid line, or "" if none found
-     */
-    public static String readSingleDfaLine(String filename) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(filename));
-        String line;
-        do {
-            line = br.readLine();
-        } while (line != null && (line.startsWith("#") || line.trim().isEmpty()));
-        br.close();
-        return line == null ? "" : line.trim();
-    }
-
-    /**
-     * Reads all non-comment, non-blank lines from a file (for multi-DFA inputs).
-     * 
-     * @param filename File to read
-     * @return List of all valid lines
-     */
-    public static List<String> readAllDfaLines(String filename) throws IOException {
+    // Read a list of lines from a file (UTF-8)
+    public static List<String> readLines(String filename) throws IOException {
         List<String> lines = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new FileReader(filename));
-        String line;
-        while ((line = br.readLine()) != null) {
-            line = line.trim();
-            if (line.isEmpty() || line.startsWith("#")) continue;
-            lines.add(line);
-        }
-        br.close();
+        BufferedReader r = new BufferedReader(new FileReader(filename));
+        String ln;
+        while ((ln = r.readLine()) != null)
+            if (!ln.trim().isEmpty())
+                lines.add(ln.trim());
+        r.close();
         return lines;
     }
 
-    /**
-     * Prints usage message and exits program.
-     * @param msg Custom error message
-     */
-    public static void errorExit(String msg) {
-        System.out.println(msg);
-        System.exit(1);
+    // For demo: parse DFA files, print output
+    public static void main(String[] args) throws IOException {
+        if (args.length < 2) {
+            System.err.println("Usage: java Util empty <file> | equiv <file>");
+            System.exit(1);
+        }
+        String cmd = args[0];
+        if (cmd.equals("empty")) {
+            String dfaDescr = readLines(args[1]).get(0);
+            DFA dfa = new DFA(dfaDescr);
+            System.out.println(EmptinessChecker.checkEmptiness(dfa));
+        } else if (cmd.equals("equiv")) {
+            List<String> lines = readLines(args[1]);
+            if (lines.size() < 2) { System.err.println("Need two DFA descriptions."); return;}
+            DFA dfa1 = new DFA(lines.get(0));
+            DFA dfa2 = new DFA(lines.get(1));
+            System.out.println(EquivalenceChecker.checkEquivalence(dfa1, dfa2));
+        } else {
+            System.err.println("Unknown command: " + cmd);
+        }
     }
 }

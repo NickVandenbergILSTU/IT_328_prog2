@@ -1,72 +1,102 @@
-/*
+/**
  * DFA.java
- * --------
- * Immutable object for representing and simulating a DFA.
- * Input format: states are listed as q0fq2fq1fq3, transitions as q0aq1,q0bq0,...
- * Accepts if string leads to q0 or q2 with no leftover chars.
+ * A representation of a Deterministic Finite Automaton with alphabet {a, b}.
  */
 
 import java.util.*;
 
 public class DFA {
-    public final Set<String> states;
-    public final Set<String> acceptStates;
-    public final Set<String> alphabet;
-    public final String startState;
-    public final Map<String, Map<String, String>> transitions;
+    public Set<String> states;
+    public String startState;
+    public Set<String> acceptStates;
+    public Map<Pair, String> transitions;
 
-    // Parses one formatted DFA line
-    public static DFA fromFormat(String line) {
-        String[] parts = line.split(",");
-        Set<String> states = new HashSet<>();
-        Set<String> acceptStates = new HashSet<>();
-        Map<String, Map<String, String>> trans = new HashMap<>();
-
-        // States part (first, separated by f)
-        String[] stateParts = parts[0].split("f");
-        String start = stateParts[0];
-        for (String s : stateParts) {
-            states.add(s);
+    // Helper pair class for (state, symbol)
+    public static class Pair {
+        public String state;
+        public char symbol;
+        public Pair(String state, char symbol) {
+            this.state = state;
+            this.symbol = symbol;
         }
-        // Accept states are q0 and q2 only
-        acceptStates.add("q0");
-        acceptStates.add("q2");
-
-        // Collect transitions and alphabet
-        Set<String> alphabet = new HashSet<>();
-        for (int i = 1; i < parts.length; ++i) {
-            String t = parts[i];
-            // q1aq2 = from q1 by 'a' to q2
-            String src = t.substring(0, t.indexOf('a') != -1 ? t.indexOf('a') : t.indexOf('b'));
-            String sym = t.contains("a") ? "a" : "b";
-            String dst = t.substring(t.indexOf(sym)+1);
-            alphabet.add(sym);
-            trans.putIfAbsent(src, new HashMap<>());
-            trans.get(src).put(sym, dst);
+        // required for use as Map key
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Pair)) return false;
+            Pair p = (Pair)o;
+            return state.equals(p.state) && symbol == p.symbol;
         }
-        return new DFA(states, alphabet, start, acceptStates, trans);
+        @Override
+        public int hashCode() {
+            return Objects.hash(state, symbol);
+        }
     }
 
-    // DFA constructor
-    public DFA(Set<String> states, Set<String> alphabet, String startState,
-               Set<String> acceptStates, Map<String, Map<String, String>> transitions) {
-        this.states = states;
-        this.acceptStates = acceptStates;
-        this.alphabet = alphabet;
-        this.startState = startState;
-        this.transitions = transitions;
+    // Construct from string description as given in Problem 1 input
+    public DFA(String description) {
+        states = new HashSet<>();
+        acceptStates = new HashSet<>();
+        transitions = new HashMap<>();
+
+        String[] parts = description.trim().split(",");
+        if (parts.length < 1) throw new IllegalArgumentException("Invalid DFA description.");
+
+        // Parse state list (e.g. q0fq1q2fq3)
+        String stateDescr = parts[0];
+        List<String> tmpStates = new ArrayList<>();
+        int i = 0;
+        while (i < stateDescr.length()) {
+            if (stateDescr.charAt(i) == 'q') {
+                int start = i;
+                i++;
+                while (i < stateDescr.length() && Character.isDigit(stateDescr.charAt(i))) i++;
+                String name = stateDescr.substring(start, i);
+                boolean isFinal = false;
+                if (i < stateDescr.length() && stateDescr.charAt(i) == 'f') {
+                    isFinal = true;
+                    i++;
+                }
+                states.add(name);
+                tmpStates.add(name);
+                if (isFinal) acceptStates.add(name);
+            } else {
+                i++; // skip unexpected chars
+            }
+        }
+        if (tmpStates.size() == 0) throw new IllegalArgumentException("No states found.");
+        startState = tmpStates.get(0);
+
+        // Parse transitions
+        for (int j = 1; j < parts.length; j++) {
+            String t = parts[j];
+            // Example: q0aq1 means from q0, on a, go to q1
+            if (!t.startsWith("q")) throw new IllegalArgumentException("Invalid transition: " + t);
+            int si = 1;
+            while (si < t.length() && Character.isDigit(t.charAt(si))) si++;
+            String from = t.substring(0, si);
+            char symbol = t.charAt(si);
+            si++;
+            if (t.charAt(si) != 'q') throw new IllegalArgumentException("Invalid transition: " + t);
+            int sj = si + 1;
+            while (sj < t.length() && Character.isDigit(t.charAt(sj))) sj++;
+            String to = t.substring(si, sj);
+            transitions.put(new Pair(from, symbol), to);
+        }
     }
 
-    // Return true if input string leads to q0 or q2 using transitions
-    public boolean accepts(String input) {
-        String state = startState;
+    // Run DFA, return accept/reject, and if accept, last state
+    public boolean run(String input) {
+        String current = startState;
         for (char c : input.toCharArray()) {
-            String s = String.valueOf(c);
-            if (!alphabet.contains(s) || !transitions.containsKey(state)
-                    || !transitions.get(state).containsKey(s))
-                return false;
-            state = transitions.get(state).get(s);
+            Pair key = new Pair(current, c);
+            if (!transitions.containsKey(key)) return false;
+            current = transitions.get(key);
         }
-        return (state.equals("q0") || state.equals("q2"));
+        return acceptStates.contains(current);
+    }
+
+    // Given state and symbol, next state
+    public String move(String state, char symbol) {
+        return transitions.get(new Pair(state, symbol));
     }
 }
