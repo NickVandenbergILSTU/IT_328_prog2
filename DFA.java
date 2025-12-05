@@ -1,9 +1,4 @@
-
-
 import java.util.*;
-
-
-
 
 /**
  * Represents a DFA over an alphabet {a, b}.
@@ -12,15 +7,10 @@ import java.util.*;
  * Transitions are stored in a map: state -> (symbol -> nextState).
  */
 public class DFA {
-
-
     private final Set<String> states;
     private final String startState;
     private final Set<String> acceptStates;
     private final Map<String, Map<Character, String>> transitionFunction;
-
-
-
 
     /**
      * Construct a DFA.
@@ -43,13 +33,9 @@ public class DFA {
         }
     }
 
-
-
-
     public Set<String> getStates() {
         return states;
     }
-
 
     public String getStartState() {
         return startState;
@@ -63,9 +49,6 @@ public class DFA {
         return transitionFunction;
     }
 
-
-
-
     /**
      * Returns the next state for a given state and input symbol.
      *
@@ -74,13 +57,10 @@ public class DFA {
      * @return next state, or null if undefined
      */
     public String delta(String state, char symbol) {
-
         Map<Character, String> inner = transitionFunction.get(state);
         if (inner == null) return null;
         return inner.get(symbol);
     }
-
-
 
     /**
      * Simulate this DFA on the given input string.
@@ -89,14 +69,12 @@ public class DFA {
      * @return true if this DFA accepts the string, false otherwise
      */
     public boolean accepts(String input) {
-
         String current = startState;
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
             current = delta(current, c);
             if (current == null) {
                 return false;
-
             }
         }
         return acceptStates.contains(current);

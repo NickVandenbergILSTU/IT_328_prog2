@@ -1,7 +1,4 @@
-
 import java.util.*;
-
-
 
 /**
  * Implements an algorithm to decide whether the language of a DFA is empty.
@@ -14,8 +11,6 @@ import java.util.*;
  *  4. If BFS finishes without reaching an accepting state, the language is empty.
  */
 public class DFAEmptinessChecker {
-
-
     /**
      * Result container:
      *  - isEmpty: true if language is empty
@@ -25,14 +20,11 @@ public class DFAEmptinessChecker {
         public final boolean isEmpty;
         public final String witness;
 
-
         public EmptinessResult(boolean isEmpty, String witness) {
             this.isEmpty = isEmpty;
             this.witness = witness;
         }
     }
-
-
 
     /**
      * Checks whether the language of the given DFA is empty.
@@ -41,35 +33,21 @@ public class DFAEmptinessChecker {
      * @return EmptinessResult
      */
     public static EmptinessResult checkEmptiness(DFA dfa) {
-
-
         String start = dfa.getStartState();
         Set<String> accept = dfa.getAcceptStates();
-
-
         // BFS queue holds pairs (state, inputStringLeadingHere)
         Queue<StateWithString> queue = new ArrayDeque<>();
         Set<String> visited = new HashSet<>();
-
         queue.add(new StateWithString(start, ""));
         visited.add(start);
-
-
-
         while (!queue.isEmpty()) {
-
-
             StateWithString current = queue.poll();
             String state = current.state;
             String str = current.witness;
-
             if (accept.contains(state)) {
                 // We have found an accepting state; str is a witness.
                 return new EmptinessResult(false, str);
             }
-
-
-
             for (char symbol : new char[]{'a', 'b'}) {
                 String next = dfa.delta(state, symbol);
                 if (next != null && !visited.contains(next)) {
@@ -78,18 +56,14 @@ public class DFAEmptinessChecker {
                 }
             }
         }
-
         // No accepting state is reachable
         return new EmptinessResult(true, null);
     }
-
-
 
     /**
      * Helper class to store state and string used to reach it.
      */
     private static class StateWithString {
-        
         final String state;
         final String witness;
 
