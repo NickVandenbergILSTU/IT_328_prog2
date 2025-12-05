@@ -1,5 +1,0 @@
-# DFA: Accepts NOTHING (all transitions lead away from unique non-accepting start)
-# States: q0 (start), q1 - NO accepting state
-# Format: q0q1,q0aq1,q0bq1,q1aq1,q1bq1
-
-q0q1,q0aq1,q0bq1,q1aq1,q1bq1
