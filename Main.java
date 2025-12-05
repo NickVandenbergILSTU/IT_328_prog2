@@ -10,7 +10,7 @@ import java.io.IOException;
  * Usage:
  *
  *   Problem 1 (emptiness of a single DFA):
- *     java edu.ilstu.it328.dfa.Main problem1 <inputFile>
+ *     java Main problem1 <inputFile>
  *
  *     where <inputFile> contains ONE line describing a DFA.
  *
