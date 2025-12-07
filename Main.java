@@ -3,7 +3,6 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * AI used to generate the following comment:
  * 
  * Entry point for both Problem 1 and Problem 2.
  *
@@ -29,7 +28,7 @@ import java.io.IOException;
  *     - If not equal:               "no" on first line,
  *                                   witness string on second line,
  *                                   and a line indicating which DFA accepts it:
- *                                   "accepted by: 1" or "accepted by: 2"
+ *                                   1 = DFA on first line, 2 = DFA on second line of txt input file
  */
 public class Main {
     public static void main(String[] args) {

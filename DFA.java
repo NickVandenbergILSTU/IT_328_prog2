@@ -16,6 +16,7 @@ public class DFA {
 
     /**
      * Construct a DFA.
+     * I asked AI what to use for this.states and this.acceptStates to make them unmodifiable sets.
      *
      * @param states             set of all states
      * @param startState         start state
@@ -26,10 +27,12 @@ public class DFA {
                String startState,
                Set<String> acceptStates,
                Map<String, Map<Character, String>> transitionFunction) {
+
         this.states = Collections.unmodifiableSet(new HashSet<>(states));
         this.startState = startState;
         this.acceptStates = Collections.unmodifiableSet(new HashSet<>(acceptStates));
         this.transitionFunction = new HashMap<>();
+
         for (Map.Entry<String, Map<Character, String>> e : transitionFunction.entrySet()) {
             this.transitionFunction.put(e.getKey(), new HashMap<>(e.getValue()));
         }

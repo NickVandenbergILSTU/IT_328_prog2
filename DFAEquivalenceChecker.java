@@ -79,6 +79,10 @@ public class DFAEquivalenceChecker {
     /**
      * Build a DFA that accepts strings where dfa1 and dfa2 disagree.
      * This is the "symmetric difference" - strings in one language but not both.
+     * 
+     * AI used to determine best data structures for states and accceptStates,
+     * which ended up being LinkedHashSet
+     * 
      */
     private static DFA buildSymmetricDifferenceDFA(DFA dfa1, DFA dfa2) {
 
@@ -106,6 +110,8 @@ public class DFAEquivalenceChecker {
             // (meaning dfa1 and dfa2 disagree at this point)
             boolean pAccept = dfa1.getAcceptStates().contains(p);
             boolean qAccept = dfa2.getAcceptStates().contains(q);
+
+            // XOR condition
             if (pAccept ^ qAccept) {
                 acceptStates.add(pq);
             }

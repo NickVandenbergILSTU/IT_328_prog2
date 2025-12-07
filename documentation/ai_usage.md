@@ -1,2 +1,2 @@
-Sections written with AI say "AI"
-All others written by Nick Vandenberg
+Sections of code written with AI have "AI" listed in the comments.
+All other sections written by Nick Vandenberg

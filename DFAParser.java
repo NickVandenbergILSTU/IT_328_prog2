@@ -17,16 +17,21 @@ import java.util.*;
 public class DFAParser {
     /**
      * Parse a DFA from a single input line.
+     * 
+     * AI used to help determine best data structures for states and acceptStates,
+     * which ended up being LinkedHashSet (same as DFAEquivalenceChecker.java)
      *
      * @param line input line describing a DFA
      * @return DFA instance
      * @throws IllegalArgumentException if input line is malformed
      */
     public static DFA parseFromLine(String line) {
+
         line = line.trim();
         if (line.isEmpty()) {
             throw new IllegalArgumentException("Empty DFA description line.");
         }
+
         String[] parts = line.split(",");
         if (parts.length < 1) {
             throw new IllegalArgumentException("Malformed DFA description: " + line);

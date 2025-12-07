@@ -1,5 +1,6 @@
 import java.util.*;
 
+
 /**
  * Implements an algorithm to decide whether the language of a DFA is empty.
  *
