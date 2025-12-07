@@ -16,7 +16,8 @@ public class DFA {
 
     /**
      * Construct a DFA.
-     * I asked AI what to use for this.states and this.acceptStates to make them unmodifiable sets.
+     * I asked AI what data structure to use for this.states and this.acceptStates
+     * It recommended unmodifiableSet wrapping a HashSet
      *
      * @param states             set of all states
      * @param startState         start state
