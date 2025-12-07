@@ -3,6 +3,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
+ * AI used to generate the following comment:
+ * 
  * Entry point for both Problem 1 and Problem 2.
  *
  * Usage:
@@ -91,12 +93,15 @@ public class Main {
             if (line1 == null || line2 == null) {
                 throw new IllegalArgumentException("Input file must contain exactly two lines for problem2.");
             }
+
             DFA dfa1 = DFAParser.parseFromLine(line1);
             DFA dfa2 = DFAParser.parseFromLine(line2);
             DFAEquivalenceChecker.EquivalenceResult result =
                     DFAEquivalenceChecker.checkEquivalence(dfa1, dfa2);
+
             if (result.equivalent) {
                 System.out.println("yes, the 2 languages are equal");
+                
             } else {
                 System.out.println("no, the 2 languages are not equal. The following string is accepted by 1 but not the other:");
                 System.out.println("String: " + result.witness);
