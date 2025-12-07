@@ -12,8 +12,8 @@ Major Steps:
 Location: DFAEmptinessChecker.java, lines 35-40
 The algorithm begins by creating a queue for BFS traversal and a visited set to track explored states. We start with the DFA's start state and an empty input string.
 
-javaQueue<StateWithString> queue = new ArrayDeque<>();
-Set<String> visited = new HashSet<>();
+queue = new ArrayDeque<>();
+visited = new HashSet<>();
 queue.add(new StateWithString(start, ""));
 visited.add(start);
 
@@ -22,7 +22,7 @@ visited.add(start);
 Location: DFAEmptinessChecker.java, lines 42-57
 For each state dequeued, we check if it's an accepting state. If so, we've found a witness string and the language is non-empty. Otherwise, we explore transitions on symbols 'a' and 'b', adding unvisited states to the queue along with the string that reaches them.
 
-javawhile (!queue.isEmpty()) {
+while (!queue.isEmpty()) {
     StateWithString current = queue.poll();
     if (accept.contains(state)) {
         return new EmptinessResult(false, str);
@@ -37,7 +37,7 @@ javawhile (!queue.isEmpty()) {
 }
 
 
-Step 3: Return Result
+- Step 3: Return Result
 Location: DFAEmptinessChecker.java, lines 58-59
 
 If BFS completes without finding an accepting state, the language is empty.

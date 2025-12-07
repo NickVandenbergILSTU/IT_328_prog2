@@ -73,6 +73,7 @@ public class DFAParser {
         String startState = states.iterator().next(); // first listed state is start
         Map<String, Map<Character, String>> transitionFunction = new HashMap<>();
 
+
         // Initialize transition map for all states (optional, but keeps things tidy)
         for (String s : states) {
             transitionFunction.put(s, new HashMap<>());
@@ -142,7 +143,7 @@ public class DFAParser {
                 throw new IllegalArgumentException("Non-deterministic transition: " + fromState
                         + " already has a transition on " + symbol);
             }
-            
+
             inner.put(symbol, toState);
         }
         return new DFA(states, startState, acceptStates, transitionFunction);

@@ -41,6 +41,7 @@ public class Main {
         String mode = args[0];
         String inputFile = args[1];
         try {
+            
             if ("problem1".equalsIgnoreCase(mode)) {
                 runProblem1(inputFile);
             } else if ("problem2".equalsIgnoreCase(mode)) {
@@ -51,9 +52,11 @@ public class Main {
                 printUsageAndExit();
             }
         } catch (IOException e) {
+
             System.err.println("Error reading input file: " + e.getMessage());
             System.exit(1);
         } catch (IllegalArgumentException e) {
+
             System.err.println("Input parsing error: " + e.getMessage());
             System.exit(1);
         }
@@ -68,6 +71,7 @@ public class Main {
             if (line == null) {
                 throw new IllegalArgumentException("Input file is empty for problem1.");
             }
+
 
             DFA dfa = DFAParser.parseFromLine(line);
             DFAEmptinessChecker.EmptinessResult result = DFAEmptinessChecker.checkEmptiness(dfa);
@@ -101,7 +105,7 @@ public class Main {
 
             if (result.equivalent) {
                 System.out.println("yes, the 2 languages are equal");
-                
+
             } else {
                 System.out.println("no, the 2 languages are not equal. The following string is accepted by 1 but not the other:");
                 System.out.println("String: " + result.witness);

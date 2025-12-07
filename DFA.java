@@ -8,7 +8,7 @@ import java.util.*;
  */
 public class DFA {
 
-    
+
     private final Set<String> states;
     private final String startState;
     private final Set<String> acceptStates;
@@ -77,10 +77,12 @@ public class DFA {
      * @return true if this DFA accepts the string, false otherwise
      */
     public boolean accepts(String input) {
+
         String current = startState;
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
             current = delta(current, c);
+            
             if (current == null) {
                 return false;
             }
@@ -92,14 +94,18 @@ public class DFA {
 
     @Override
     public String toString() {
+
         StringBuilder sb = new StringBuilder();
         sb.append("States: ").append(states).append("\n");
         sb.append("Start: ").append(startState).append("\n");
         sb.append("Accept: ").append(acceptStates).append("\n");
         sb.append("Transitions:\n");
+
         for (String s : states) {
+
             Map<Character, String> inner = transitionFunction.get(s);
             if (inner != null) {
+
                 for (Map.Entry<Character, String> e : inner.entrySet()) {
                     sb.append("  ").append(s).append(" --")
                             .append(e.getKey()).append("--> ")

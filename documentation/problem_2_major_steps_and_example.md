@@ -12,8 +12,9 @@ Major Steps:
 Location: DFAEquivalenceChecker.java, lines 68-120
 
 The symmetric difference DFA has states that are pairs (p, q) from the two original DFAs. A pair is accepting if exactly one of p or q was accepting in its original DFA (using XOR logic).
-javaboolean pAccept = dfa1.getAcceptStates().contains(p);
-boolean qAccept = dfa2.getAcceptStates().contains(q);
+
+pAccept = dfa1.getAcceptStates().contains(p);
+qAccept = dfa2.getAcceptStates().contains(q);
 if (pAccept ^ qAccept) {
     acceptStates.add(pq);
 }
@@ -23,7 +24,7 @@ if (pAccept ^ qAccept) {
 Location: DFAEquivalenceChecker.java, lines 82-115
 
 Starting from the pair of start states, we explore all reachable product states. For each symbol, we compute the next state in both DFAs and create the corresponding product state.
-javafor (char symbol : new char[]{'a', 'b'}) {
+for (char symbol : new char[]{'a', 'b'}) {
     String pNext = dfa1.delta(p, symbol);
     String qNext = dfa2.delta(q, symbol);
     if (pNext == null || qNext == null) continue;
@@ -42,7 +43,7 @@ Location: DFAEquivalenceChecker.java, lines 48-60
 
 We use the emptiness checker from Problem 1 on the difference DFA. If it's empty, the DFAs are equivalent. If not, the witness string shows where they differ.
 
-javaDFAEmptinessChecker.EmptinessResult er = DFAEmptinessChecker.checkEmptiness(diff);
+DFAEmptinessChecker.EmptinessResult er = DFAEmptinessChecker.checkEmptiness(diff);
 if (er.isEmpty) {
     return new EquivalenceResult(true, null, false);
 } else {

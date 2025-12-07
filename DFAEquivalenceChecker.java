@@ -53,17 +53,22 @@ public class DFAEquivalenceChecker {
      * @return EquivalenceResult with the answer and possibly a counterexample
      */
     public static EquivalenceResult checkEquivalence(DFA dfa1, DFA dfa2) {
+
         // Build a DFA that accepts strings where dfa1 and dfa2 disagree
         DFA diff = buildSymmetricDifferenceDFA(dfa1, dfa2);
+
         // Check if this difference DFA accepts anything
         DFAEmptinessChecker.EmptinessResult er = DFAEmptinessChecker.checkEmptiness(diff);
+
         if (er.isEmpty) {
             // The DFAs never disagree, so they're equivalent
             return new EquivalenceResult(true, null, false);
         } else {
+
             // Found a string where they disagree
             String w = er.witness;
             boolean firstAccepts = dfa1.accepts(w);
+            
             // Exactly one of them accepts it
             return new EquivalenceResult(false, w, firstAccepts);
         }
@@ -76,22 +81,27 @@ public class DFAEquivalenceChecker {
      * This is the "symmetric difference" - strings in one language but not both.
      */
     private static DFA buildSymmetricDifferenceDFA(DFA dfa1, DFA dfa2) {
+
         // Product states are pairs (p, q) encoded as "p|q"
         Set<String> states = new LinkedHashSet<>();
         Set<String> acceptStates = new LinkedHashSet<>();
         Map<String, Map<Character, String>> transitionFunction = new HashMap<>();
         String start = pair(dfa1.getStartState(), dfa2.getStartState());
         states.add(start);
+
         // BFS to explore all reachable product states
         Queue<String> queue = new ArrayDeque<>();
         Set<String> visited = new HashSet<>();
         queue.add(start);
         visited.add(start);
+
         while (!queue.isEmpty()) {
+
             String pq = queue.poll();
             String[] parts = pq.split("\\|", 2);
             String p = parts[0];
             String q = parts[1];
+
             // Accept this product state if exactly one of p or q is accepting
             // (meaning dfa1 and dfa2 disagree at this point)
             boolean pAccept = dfa1.getAcceptStates().contains(p);
@@ -99,6 +109,7 @@ public class DFAEquivalenceChecker {
             if (pAccept ^ qAccept) {
                 acceptStates.add(pq);
             }
+
             // Build transitions for this product state
             Map<Character, String> inner = transitionFunction.computeIfAbsent(pq, k -> new HashMap<>());
             for (char symbol : new char[]{'a', 'b'}) {
@@ -108,6 +119,7 @@ public class DFAEquivalenceChecker {
                     // If either DFA doesn't have a transition, skip this symbol
                     continue;
                 }
+
                 String pqNext = pair(pNext, qNext);
                 inner.put(symbol, pqNext);
                 if (!visited.contains(pqNext)) {
