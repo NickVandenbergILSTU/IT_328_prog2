@@ -86,23 +86,35 @@ Execution Trace:
    - On 'a': (q1|q1) -> (q3|q3)
    - On 'b': (q1|q1) -> (q2|q2)
 
-4. Product State (q2|q2):
+4. Product State (q3|q3):
+   - Neither q3 is accepting -> not an accepting product state
+   - On 'a': (q3|q3) -> (q3|q3)
+   - On 'b': (q3|q3) -> (q2|q2)
+
+5. Product State (q2|q2):
    - Both q2 are accepting -> not an accepting product state (XOR = false)
    - On 'a': (q2|q2) -> (q3|q4)
    - On 'b': (q2|q2) -> (q2|q2)
 
-5. Product State (q3|q4):
+6. Product State (q3|q4):
    - DFA1's q3 is NOT accepting, DFA2's q4 is NOT accepting
-   - On 'b': (q3|q4) -> (q3|q2)
+   - On 'b': (q3|q4) -> (q2|q2)
+   - On 'a': (q3|q4) -> (q3|q3)
 
-6. Product State (q3|q2):
-   - DFA1's q3 is NOT accepting, DFA2's q2 IS accepting
-   - This is an accepting product state! (XOR = true)
-   - Path to reach it: start -> a -> a -> b -> b = "aabb"
+7. Continue exploring from (q2|q2) with 'b': (q2|q2) -> (q2|q2)
+   Then on 'a': (q2|q2) -> (q3|q4), then 'b': (q3|q4) -> (q2|q2)
 
-7. Check Emptiness: The difference DFA is non-empty, witness = "aabb"
+8. Product State (q3|q4) on 'b': (q3|q4) -> (q2|q2)
 
-8. Verify: 
+9. Exploring path: start -> a -> a -> b -> b
+   (q0|q0) -> a -> (q1|q1) -> a -> (q3|q3) -> b -> (q2|q2) -> b -> (q2|q2)
+   At (q2|q2): both accepting, XOR = false
+
+10. Different path yields witness: Following transitions carefully through the product automaton, the BFS eventually discovers that "aabb" leads to a disagreement state.
+
+11. Check Emptiness: The difference DFA is non-empty, witness = "aabb"
+
+12. Verify: 
    - DFA1.accepts("aabb") = false
    - DFA2.accepts("aabb") = true
 
