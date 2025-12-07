@@ -31,9 +31,11 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String[] args) {
+
         if (args.length != 2) {
             printUsageAndExit();
         }
+
         String mode = args[0];
         String inputFile = args[1];
         try {
@@ -41,7 +43,8 @@ public class Main {
                 runProblem1(inputFile);
             } else if ("problem2".equalsIgnoreCase(mode)) {
                 runProblem2(inputFile);
-            } else {
+            } else 
+            {
                 System.err.println("Unknown mode: " + mode);
                 printUsageAndExit();
             }
@@ -54,6 +57,8 @@ public class Main {
         }
     }
 
+
+
     // Run problem 1: check emptiness of a DFA from input file.
     private static void runProblem1(String inputFile) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
@@ -61,17 +66,22 @@ public class Main {
             if (line == null) {
                 throw new IllegalArgumentException("Input file is empty for problem1.");
             }
+
             DFA dfa = DFAParser.parseFromLine(line);
             DFAEmptinessChecker.EmptinessResult result = DFAEmptinessChecker.checkEmptiness(dfa);
+
             if (result.isEmpty) {
                 System.out.println("yes, the language is empty");
-            } else {
+            } 
+            else {
                 System.out.println("no, the language is non-empty. The following string is accepted:");
                 System.out.println("Accepted string: " + result.witness);
                 System.out.println("Note: if the accepted string is empty, then the DFA accepts the empty string.");
             }
         }
     }
+
+
 
     // Run problem 2: check equivalence of two DFAs from input file.
     private static void runProblem2(String inputFile) throws IOException {
@@ -94,6 +104,8 @@ public class Main {
             }
         }
     }
+
+
 
     // If usage is incorrect, print usage message and exit.
     private static void printUsageAndExit() {

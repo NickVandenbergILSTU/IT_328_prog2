@@ -7,6 +7,8 @@ import java.util.*;
  * Transitions are stored in a map: state -> (symbol -> nextState).
  */
 public class DFA {
+
+    
     private final Set<String> states;
     private final String startState;
     private final Set<String> acceptStates;
@@ -33,6 +35,8 @@ public class DFA {
         }
     }
 
+
+
     public Set<String> getStates() {
         return states;
     }
@@ -49,6 +53,8 @@ public class DFA {
         return transitionFunction;
     }
 
+
+
     /**
      * Returns the next state for a given state and input symbol.
      *
@@ -61,6 +67,8 @@ public class DFA {
         if (inner == null) return null;
         return inner.get(symbol);
     }
+
+
 
     /**
      * Simulate this DFA on the given input string.
@@ -79,6 +87,8 @@ public class DFA {
         }
         return acceptStates.contains(current);
     }
+
+
 
     @Override
     public String toString() {

@@ -30,6 +30,8 @@ public class DFAEquivalenceChecker {
      *                    accepted by the first DFA (false means the second accepts it)
      */
     public static class EquivalenceResult {
+
+
         public final boolean equivalent;
         public final String witness;
         public final boolean acceptedByFirst;
@@ -40,6 +42,8 @@ public class DFAEquivalenceChecker {
             this.acceptedByFirst = acceptedByFirst;
         }
     }
+
+
 
     /**
      * Check whether two DFAs recognize the same language.
@@ -64,6 +68,8 @@ public class DFAEquivalenceChecker {
             return new EquivalenceResult(false, w, firstAccepts);
         }
     }
+
+
 
     /**
      * Build a DFA that accepts strings where dfa1 and dfa2 disagree.
@@ -114,6 +120,11 @@ public class DFAEquivalenceChecker {
         return new DFA(states, start, acceptStates, transitionFunction);
     }
 
+
+
+    /**
+     * Helper to create a product state name from two component states.
+     */
     private static String pair(String p, String q) {
         return p + "|" + q;
     }

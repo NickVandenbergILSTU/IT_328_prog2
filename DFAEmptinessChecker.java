@@ -26,6 +26,8 @@ public class DFAEmptinessChecker {
         }
     }
 
+
+
     /**
      * Checks whether the language of the given DFA is empty.
      *
@@ -59,6 +61,8 @@ public class DFAEmptinessChecker {
         // No accepting state is reachable
         return new EmptinessResult(true, null);
     }
+
+
 
     /**
      * Helper class to store state and string used to reach it.
